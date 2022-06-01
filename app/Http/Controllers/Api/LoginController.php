@@ -42,7 +42,7 @@ class LoginController extends Controller
 
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
 
         $token = auth()->user()->token();
