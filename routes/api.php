@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\RegisterController;
@@ -12,3 +11,4 @@ Route::post("register", [RegisterController::class, "store"])->name("api.registe
 Route::post("login", [LoginController::class, "store"])->name("api.login");
 Route::apiResource("categories", CategoryController::class)->names("api.categories");
 Route::apiResource("posts", PostController::class)->names("api.posts");
+Route::middleware("auth:api")->post("logout", [LoginController::class, "logout"])->name("api.logout");

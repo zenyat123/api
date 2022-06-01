@@ -4,10 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-
-use App\Models\User;
-use App\Http\Resources\UserResource;
 
 class LoginController extends Controller
 {
@@ -22,12 +18,19 @@ class LoginController extends Controller
 
         ]);
 
-        $user = User::where("email", $request->email)->firstOrFail();
+        $data = [
 
-        if(Hash::check($request->password, $user->password))
+            "email" => $request->email,
+            "password" => $request->password
+
+        ];
+
+        if(auth()->attempt($data))
         {
 
-            return UserResource::make($user);
+            $token = auth()->user()->createToken("Personal Access Token")->accessToken;
+
+            return response()->json(["token" => $token], 200);
 
         }
         else
@@ -36,6 +39,17 @@ class LoginController extends Controller
             return response()->json(["message" => "These credentials do not match our records"], 404);
 
         }
+
+    }
+
+    public function logout(Request $request)
+    {
+
+        $token = auth()->user()->token();
+
+        $token->revoke();
+
+        return response()->json(["message" => "loggetout"]);
 
     }
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Http\Resources\UserResource;
 use App\Models\User;
 
 class RegisterController extends Controller
@@ -30,7 +29,9 @@ class RegisterController extends Controller
 
         ]);
 
-        return UserResource::make($user);
+        $token = $user->createToken("Personal Access Token")->accessToken;
+
+        return response()->json(["token" => $token], 200);
 
     }
 

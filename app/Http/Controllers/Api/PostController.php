@@ -14,7 +14,7 @@ class PostController extends Controller
     public function __construct()
     {
 
-        $this->middleware("auth:api")->except(["index", "show"]);
+        $this->middleware("auth:api");
 
     }
 
@@ -68,7 +68,6 @@ class PostController extends Controller
             "url" => "required|unique:posts,url,".$post->id,
             "resume" => "required",
             "content" => "required",
-            "user_id" => "required|exists:users,id",
             "category_id" => "required|exists:categories,id"
 
         ]);
